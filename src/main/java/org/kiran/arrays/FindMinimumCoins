@@ -1,0 +1,23 @@
+package org.kiran.arrays;
+
+import java.util.Arrays;
+
+public class FindMinimumCoins {
+    /**
+     * Intuition: take the largest possible denomination coin that does not exceed the remaining amount
+     */
+    public List<Integer> minCoins(int[] coins, int V) {
+        Arrays.sort(coins); // sort denominations in ascending order
+        List<Integer> result = new ArrayList<>(); // list to store coins chosen
+        
+        // iterate from largest coin to smallest
+        for (int i = coins.length - 1; i >= 0; i--) {
+            while (V >= coins[i]) {
+                V -= coins[i]; // subtract coin value from amount
+                result.add(coins[i]); // add coin to result
+            }
+        }
+        
+        return result; // return the list of coins used
+    }
+}
