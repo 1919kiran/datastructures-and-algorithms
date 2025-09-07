@@ -2,6 +2,9 @@ import java.util.*;
 
 class SudokuSolver {
 
+    /**
+     * Intuition: Iterate over the matrix to find an empty cell. Once you find an empty cell, check if all digits 1-9 can be inserted here recursively.
+     */
     public void solveSudoku(char[][] board) {
         solve(board); // call the recursive solver
     }

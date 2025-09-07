@@ -5,7 +5,7 @@ import org.kiran.concepts.Math;
 
 import java.util.*;
 
-@Arrays @Math
+
 public class CountSubArraysWithXorK {
     /*
     *  Maintain XOR for a prefix

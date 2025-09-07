@@ -5,7 +5,7 @@ import org.kiran.concepts.SlidingWindow;
 
 import java.util.*;
 
-@Arrays @SlidingWindow
+
 public class LongestSubstringWithoutRepeatingChars {
     public int lengthOfLongestSubstring(String s) {
         // handle null quickly; leetcode usually gives non-null, but let's be safe
