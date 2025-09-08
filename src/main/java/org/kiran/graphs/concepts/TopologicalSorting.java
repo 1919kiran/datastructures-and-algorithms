@@ -9,7 +9,7 @@ class Solution{
     public List<Integer> topoSortDfs(int V, List<List<Integer>> graph) {
         boolean[] visited = new boolean[V];
         Stack<Integer> stk = new Stack<>();
-        for(int i=0, i<V, i++) {
+        for(int i=0; i<V; i++) {
             if(!visited[i]) {
                 dfs(i, graph, stk);
             }
