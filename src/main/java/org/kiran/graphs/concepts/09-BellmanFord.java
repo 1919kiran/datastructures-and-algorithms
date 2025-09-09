@@ -9,8 +9,8 @@
  * Why N-1:
  * Consider graph 0 -> 1 -> 2 -> 3 -> 4 
  * Edges are in the order {(3,4,x),(2,3,x),(1,2,x),(0,1,x)}
- * since the edges can be given in any order, in worst case the order of edges can be in such a way that in 1st iteration distance array all nodes seem unreachable
- * so in this case each iteration 1 distance is computed using the parent distance which has been computer in previous step.
+ * since the edges can be given in any order, in worst case the order of edges can be in such a way that in 1st iteration distance array all nodes seem 
+ * unreachable, so in this case each iteration 1 distance is computed using the parent distance which has been computer in previous step.
  * so if we do it n-1 times, it is guaranteed that all connected nodes will be relaxed.
  * 
  * How to detect negative cycles:

@@ -33,7 +33,7 @@ class MSTResult {
 
 /**
  * 
- * Intuition: It's asically a greedy BFS
+ * Intuition: It's basically a greedy BFS
  * At every step starting from a source node, we check it's neighbors and pick those neighbors into the MST whose path is cheapest
  */
 class Solution {

@@ -22,6 +22,7 @@ class Solution {
     }
 
     // If starting node is not mentioned
+    // To be used when graph is disconnected
     public ArrayList<Integer> bfs(int V, List<List<Integer>> graph) {
         ArrayList<Integer> result = new ArrayList<>();
         boolean[] visited = new boolean[V];

@@ -14,8 +14,9 @@ class Solution {
     }
 
     /**
-     * Intuition: whether this node is part of the current DFS call stack?? if during DFS we reach a node that is already in the current recursion stack, that means we found a cycle.
-     * We can do that by maintain visited that is local to the call stack.
+     * Intuition: whether this node is part of the current DFS call stack?? if during DFS we reach a node that is already in the current recursion stack, 
+     * that means we found a cycle. We can do that by maintain visited that is local to the call stack... 
+     * similar to backtracking we takeout from pathvisited once we go back
      */
     private boolean dfsCheck(int node, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] visited, , boolean[] pathVisited) {
         vistited[node] = true;
@@ -30,13 +31,13 @@ class Solution {
                 return true;
             }
         }
-        pathVisited[node] = false;
+        pathVisited[node] = false;  // backtrack removal
         return false;
     }
 
     /**
      * Intuition: If a valid topo ordering cannot be determined then it contains a cycle
-     * So if the computed top order does not contain all nodes, then topo sorting did not work -> not a DAG.
+     * So if the computed topo order does not contain all nodes, then topo sorting did not work -> not a DAG.
      * The key here is that the queue becomes empty before all nodes indegree becomes 0..
      * So if there is a cycle, then there will be a case where we hypothetically remove edge from curr node to child (indegree--) but
      *  - there are no more nodes with indegree 0 (no start points)
