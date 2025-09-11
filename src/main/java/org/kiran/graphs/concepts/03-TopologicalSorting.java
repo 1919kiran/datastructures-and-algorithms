@@ -1,6 +1,6 @@
 class Solution{
     /**
-     * Def: In the adj list for any u -> v then any liear ordering that has u appearing before v is a valid topolocial ordering
+     * Def: In the adj list for any u -> v then any linear ordering that has u appearing before v is a valid topolocial ordering
      * It is only valid for DAGs
      * Intuition: We just store the ordering in the same way it was travelled
      * The topological ordering is preserved by the DFS path so if we have the DFS path we have the topo ordering.

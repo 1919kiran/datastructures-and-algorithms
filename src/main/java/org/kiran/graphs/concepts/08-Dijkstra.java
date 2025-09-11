@@ -11,9 +11,14 @@ class Solution {
      * Note: Does not work for -ve weight or cycles
      * 
      * Why PR and not Q - since we wanna only need to get smallest distance using queue we will end up with more redundant checks
-     * in an unweighted graph, every edge has the same “cost” of 1. so bfs, which expands level by level, guarantees that the first time you reach a node, it’s by the shortest number of edges. that’s why a plain queue is enough.
-     * but in a weighted graph, edges don’t all cost the same. suppose i reach a node v first through an edge of weight 100. later, maybe there’s another path to v through some other route where edges are lighter, say 1+1+1. if i only used a normal fifo queue, i’d lock in the distance 100 and never reconsider v. that would be wrong.
-     * with a priority queue, we always process the node with the smallest current tentative distance. so even if we discovered v early with distance 100, we’ll only pull it out of the heap to relax when it has the minimum tentative distance compared to everything else.
+     * in an unweighted graph, every edge has the same “cost” of 1. so bfs, which expands level by level, guarantees that the first time you reach a node, 
+     * it’s by the shortest number of edges. that’s why a plain queue is enough.
+     * basically, shortest path is via minimum number of edges.
+     * but in a weighted graph, edges don’t all cost the same. suppose i reach a node v first through an edge of weight 100. 
+     * later, maybe there’s another path to v through some other route where edges are lighter, say 1+1+1. if i only used a normal fifo queue, 
+     * i’d lock in the distance 100 and never reconsider v. that would be wrong.
+     * with a priority queue, we always process the node with the smallest current tentative distance. so even if we discovered v early with distance 100, 
+     * we’ll only pull it out of the heap to relax when it has the minimum tentative distance compared to everything else.
      * 
      * TC: E log V
      * 
@@ -37,10 +42,10 @@ class Solution {
 
             if (d > dist[u]) continue;
 
-            for (Edge edge : adj.get(u)) {
+            for (Edge edge : graph.get(u)) {
                 int v = edge.v;       // neighbor
                 int w = edge.wt;      // weight
-                if (dist[u] + w < dist[v]) {   // if we found shorter path
+                if (dist[u] + w < dist[v]) {   // if we found shorter path perform edge relaxation
                     dist[v] = dist[u] + w;     // update distance
                     pq.offer(new int[]{dist[v], v}); // push neighbor into queue
                 }
@@ -55,7 +60,8 @@ class Solution {
      * the set contains at most one entry per node at any time: its current best known distance
      * when we relax an edge if we see that a distance already exists for a node, it means someone already reached it before and it will be in the set
      * If that is greater that the current distance, we can discard the greater distance in the set and keep the shorter distance
-     * the tradeoff is that every decrease-key operation becomes an explicit remove+add in the set, which costs log n. so complexity is still O((n + m) log n), just like with priority queue.
+     * the tradeoff is that every decrease-key operation becomes an explicit remove+add in the set, which costs log n. so complexity is still O((n + m) log n),
+     * just like with priority queue.
      * 
      * TC: E log V
      */

@@ -2,7 +2,9 @@
  * Assumption: Graph is directed
  * 
  * Algo:
+ * This is a DP solution where we will relax all the edges and not only the edges with minimum weight till now
  * 1. Relax all the edges E-1 times
+ * 2. If you relax one more time and distances change, that means there is a negative cycle
  * 
  * Intuition:
  * 
@@ -10,11 +12,8 @@
  * Consider graph 0 -> 1 -> 2 -> 3 -> 4 
  * Edges are in the order {(3,4,x),(2,3,x),(1,2,x),(0,1,x)}
  * since the edges can be given in any order, in worst case the order of edges can be in such a way that in 1st iteration distance array all nodes seem 
- * unreachable, so in this case each iteration 1 distance is computed using the parent distance which has been computer in previous step.
+ * unreachable, so in this case each iteration 1 distance is computed using the parent distance which has been computed in previous step.
  * so if we do it n-1 times, it is guaranteed that all connected nodes will be relaxed.
- * 
- * How to detect negative cycles:
- * On nth iteration if we do relaxation again, and if we see that distances reduce it means there is a negative cycles.
  * 
  * TC: O(n*m)
  * 
@@ -42,9 +41,8 @@ class Solution {
                 for (Edge edge : graph.get(u)) {   // scan all outgoing edges from 'u'
                     int v = edge.v;                // get the destination vertex
                     int w = edge.wt;               // get the edge weight
-                    long cand = dist[u] + w;       // compute candidate distance to 'v' via 'u'
-                    if (cand < dist[v]) {          // if candidate improves the current distance
-                        dist[v] = cand;            // update the distance to 'v'
+                    if (dist[u] + w < dist[v]) {   // if candidate improves the current distance
+                        dist[v] = dist[u] + w;     // update the distance to 'v'
                         changed = true;            // remember that we changed something
                     }
                 }

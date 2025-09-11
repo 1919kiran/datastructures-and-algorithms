@@ -61,7 +61,7 @@ class DisjointSetUnion {
         if (size[pu] < size[pv]) {
             parent[pu] = pv;        // make pv the parent
             size[pv] += size[pu];   // increase size of parent
-        } } else {
+        } else {
             parent[pv] = pu;        // if ranks equal, pick one.. not that it doesn't matter wh
             size[pu] += size[pv];   // increase rank of the chosen root
         }
