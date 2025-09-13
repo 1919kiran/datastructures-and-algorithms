@@ -7,43 +7,56 @@ class Solution {
      * So we can make either previousSmallestElementIndexLeft or nextSmallestElementIndexRight strictly smaller
      * 
      */
-    public int sumOfSubarrayMinimums(int[] arr) {
+    public int sumSubarrayMins(int[] arr) {
         int N = arr.length;
-        int[] smallestOnLeft = previousSmallestElementIndexLeft();
-        int[] smallestOnRight = nextSmallestElementIndexRight();
+        int MOD = (int)1e9 + 7;
+
+        int[] left = previousSmallerDistance(arr);
+        int[] right = nextSmallerDistance(arr);
+
         long ans = 0;
-        for(int i=0; i<N; i++) {
-            long contributions = (long)smallestOnLeft[i]*smallestOnRight[i];
-            ans += (contributions*arr[i])%Integer.MAX_VALUE;
+        for (int i = 0; i < N; i++) {
+            long contrib = (long) arr[i] * left[i] * right[i];
+            ans = (ans + contrib) % MOD;
         }
         return (int) ans;
     }
 
-    private int previousSmallestElementIndexLeft(int[] nums) {
-        Stack<Integer> stack = new Stack<>();
+    // distance to previous smaller element
+    private int[] previousSmallerDistance(int[] nums) {
         int N = nums.length;
         int[] res = new int[N];
-        for(int i=0; i<N; i++) {
-            int x = stack.peek();
-            while(!stack.isEmpty() && nums[i] <= nums[x]) 
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < N; i++) {
+            while (!stack.isEmpty() &&  nums[i] < nums[stack.peek()]) {
                 stack.pop();
-            res[i] = stack.isEmpty() ? i+1 : i-x;
+            }
+            // If stack is empty, no smaller element exists to the left.
+            // Distance is then from current index back to the left boundary (i + 1 steps).
+            res[i] = stack.isEmpty() ? i + 1 : i - stack.peek();
             stack.push(i);
         }
         return res;
     }
 
-    private int nextSmallestElementIndexRight(int[] nums) {
-        Stack<Integer> stack = new Stack<>();
+    // distance to next smaller element
+    private int[] nextSmallerDistance(int[] nums) {
         int N = nums.length;
         int[] res = new int[N];
-        for(int i=N-1; i>=0; i--) {
-            int x = stack.peek();
-            while(!stack.isEmpty() && nums[i] <= nums[x]) 
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = N - 1; i >= 0; i--) {
+            // allow equality here to avoid double counting
+            // If stack is empty, no smaller element exists to the right.
+            // Distance is then from current index forward to the right boundary (N - i steps).
+            while (!stack.isEmpty() && nums[i] <= nums[stack.peek()]) {
                 stack.pop();
-            res[i] = stack.isEmpty() ? n-i : x-i;
+            }
+            res[i] = stack.isEmpty() ? N - i : stack.peek() - i;
             stack.push(i);
         }
         return res;
     }
+
 }

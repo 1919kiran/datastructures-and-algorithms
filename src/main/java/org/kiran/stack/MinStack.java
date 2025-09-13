@@ -11,14 +11,13 @@ class MinStack {
     /**
      * The idea is that instead of keeping an extra stack for minimums, we can store encoded values directly in the stack to remember previous minimums.
      * What will we encode??
-     * We encode the pushin element with 2*val-min.
+     * We encode the pushing element with 2*val - min.
      * When we are about to insert into the stack, this condition is true:
      * val < minValue
      * val - minValue < 0
      * 2*val - minValue < val
      * 
-     * So we will always endup inserting something less than val with this formula
-     *  
+     * So we will always end up inserting something less than val with this formula
      */
     public void push(int val) {
         if(stack.isEmpty()) {
