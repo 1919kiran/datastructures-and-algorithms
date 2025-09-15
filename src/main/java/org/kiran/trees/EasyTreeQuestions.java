@@ -97,6 +97,24 @@ public class EasyTreeQuestions {
         return left != null ? left : right;
     }
 
+    public TreeNode lowestCommonAncestorBST(TreeNode root, int a, int b) {
+        TreeNode cur = root;
+
+        while (cur != null) {
+            if (p.val < cur.val && q.val < cur.val) {
+                // both in left subtree
+                cur = cur.left;
+            } else if (p.val > cur.val && q.val > cur.val) {
+                // both in right subtree
+                cur = cur.right;
+            } else {
+                // split point found → this is the LCA
+                return cur;
+            }
+        }
+        return null;
+    }
+
     /**
      * In a complete BT, if the height of the leftmost path equals the height of the rightmost path → the tree is perfect.
      * A perfect binary tree of height h has (2^h − 1) nodes.

@@ -2,15 +2,16 @@
  * 
  * Algorithm:
  * 1. We run a DFS to keep two numbers for any node - discoveryTime and lowestDiscoveryTime
- *  - discoveryTime: Time/steps taken in the dfs to reach tht node
- *  - lowestDiscoveryTime: Minimum discovery time of all it's adjacent nodes excpet parent
+ *  - discoveryTime: Time/steps taken in the dfs to reach that node
+ *  - lowestDiscoveryTime: Minimum discovery time of all it's adjacent nodes except parent
  * 
- * Why we need lowestDiscoveryTime? - So within a DFS path, let's say we reached the end of the call. Now we backtrack, while backtracking we check '
- * if the edge connecting this node and parent is a bridge or not.. if we take the minimum discoveryTime among all the nodes adjacent nodes
- * and compare it with the discoveryTime of it's parent - it means that in the same DFS path, the adjacent node was reached before the parent node
+ * Why we need lowestDiscoveryTime? - So within a DFS path, let's say we reached the end of the call. 
+ * Now we backtrack, while backtracking we check if the edge connecting this node and parent is a bridge or not.. 
+ * if we take the minimum discoveryTime among all the nodes adjacent nodes and compare it with the discoveryTime of 
+ * it's parent - it means that in the same DFS path, the adjacent node was reached before the parent node.
  * So even if the connection b/w this node and parent node is broken we can still reach the node.
- * but if the lowestDiscoverytime is greater than discoveryTime of parent, that means adjacent nodes cannot be visited before parent so if connection
- * is broken, the nodes becomes disconnected.
+ * but if the lowestDiscoverytime is greater than discoveryTime of parent, that means adjacent nodes cannot be visited 
+ * before parent so if connection is broken, the nodes becomes disconnected.
  * 
  */
 class Solution {
