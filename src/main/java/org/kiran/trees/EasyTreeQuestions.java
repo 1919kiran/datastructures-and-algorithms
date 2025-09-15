@@ -55,13 +55,6 @@ public class EasyTreeQuestions {
         return 1 + Math.max(left, right);
     }
 
-    public int maxPathSum(TreeNode root) {
-        if(root == null) return 0;
-        int maxLtSum = maxPathSum(root.left);
-        int maxRtSum = maxPathSum(root.right);
-        return root.val + maxLtSum + maxRtSum;
-    }
-
     public boolean isSymmetric(TreeNode root) {
         if (root == null) return true;
         // check whether left and right subtrees are mirrors
@@ -104,6 +97,43 @@ public class EasyTreeQuestions {
         return left != null ? left : right;
     }
 
-    
+    /**
+     * In a complete BT, if the height of the leftmost path equals the height of the rightmost path → the tree is perfect.
+     * A perfect binary tree of height h has (2^h − 1) nodes.
+     * Otherwise, recursively count left and right subtrees.
+     * This gives O(log² n): at each level we compute left/right heights in O(log n), and recursion depth is O(log n).
+     */
+    public int countNodes(TreeNode root) {
+        if (root == null) return 0;
+
+        int leftHeight = leftDepth(root);
+        int rightHeight = rightDepth(root);
+
+        if (leftHeight == rightHeight) {
+            // perfect binary tree i.e, no. 
+            return (1 << leftHeight) - 1;
+        } else {
+            // recurse on both sides
+            return 1 + countNodes(root.left) + countNodes(root.right);
+        }
+    }
+
+    private int leftDepth(TreeNode node) {
+        int h = 0;
+        while (node != null) {
+            h++;
+            node = node.left;
+        }
+        return h;
+    }
+
+    private int rightDepth(TreeNode node) {
+        int h = 0;
+        while (node != null) {
+            h++;
+            node = node.right;
+        }
+        return h;
+    }
 
 }
