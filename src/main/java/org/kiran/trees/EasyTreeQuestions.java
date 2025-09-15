@@ -62,4 +62,48 @@ public class EasyTreeQuestions {
         return root.val + maxLtSum + maxRtSum;
     }
 
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) return true;
+        // check whether left and right subtrees are mirrors
+        return isMirror(root.left, root.right);
+    }
+
+    private boolean isMirror(TreeNode a, TreeNode b) {
+        // if both are null, they mirror perfectly here
+        if (a == null && b == null) return true;
+        // if only one is null, shapes differ → not symmetric
+        if (a == null || b == null) return false;
+        // values must match and cross-children must mirror
+        if (a.val != b.val) return false;
+        // left of a mirrors right of b, and right of a mirrors left of b
+        return isMirror(a.left, b.right) && isMirror(a.right, b.left);
+    }
+
+    public List<Integer> rootToNodePath(TreeNode root, int num) {
+        List<Integer> path = new ArrayList<>();
+        if(root == null) return path;
+        rootToNode(root, path, num);
+        return path;
+    }
+
+    private boolean rootToNode(TreeNode root, List<Integer> path, int n) {
+        if(root == null)    return false;
+        path.add(root.val);
+        if(root.val == n)   return true;
+        if(rootToNode(root.left, path, n) || rootToNode(root.right, path, n))   return true;
+        path.remove(path.size()-1);
+        return false;
+    }
+
+    public TreeNode lowestCommonAncestor(TreeNode root, int a, int b) {
+        if(node == null) return null;
+        if(node.val == a || node.val == b)   return node;
+        TreeNode left = lowestCommonAncestor(node.left,a,b);
+        TreeNode right = lowestCommonAncestor(node.right,a,b);
+        if(left != null && right != null) return node;
+        return left != null ? left : right;
+    }
+
+    
+
 }
