@@ -1,4 +1,18 @@
 /**
+ * Purpose:
+ * To efficiently keep track of elements that are split into a number of disjoint (non-overlapping) sets.
+ * 
+ * Usecases:
+ * - Detecting connectivity: To check whether two elements are in the same group. For example, in a social network
+ * - Kruskal’s Minimum Spanning Tree Algorithm: Union-Find is used where you need to check if adding an edge would create a cycle.
+ * - Cycle detection in graphs: Efficient for checking if an undirected graph has a cycle.
+ * - Dynamic connectivity problems: When you have a set of items and keep merging subsets, DSU lets you query relationships quickly.
+ * 
+ * Patterns:
+ * - Connected Components in Undirected Graphs: Count components after unions; also used when edges get added dynamically.
+ * - Cycle Detection in undirected graphs
+ * - Connected Components in Grids
+ * - Accounts Merge / String Grouping
  * 
  * Algorithm:
  * 1. Let's keep a parent array for each node to keep track of who is the parent node of the node.
@@ -11,6 +25,7 @@
  * 4. When doing find:
  *  - Recursively find the ultimate parent, and update the parent as this ultimate root for every node along the recursive path (backtracking). 
  *  This is called as path compression.
+ * 
  */
 class DisjointSetUnion {
     private int[] parent; // parent[i] stores parent of node i
