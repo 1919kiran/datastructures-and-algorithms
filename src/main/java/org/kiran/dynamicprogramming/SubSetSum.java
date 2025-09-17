@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class SubSetSum {
+public class SubsetSum {
 
     /**
      * Recurrence:
@@ -22,19 +22,51 @@ public class SubSetSum {
         return solve(n - 1, target, nums, dp);
     }
 
+    /**
+     * We need to check if there exists a subset such that target = total / 2
+     * Because s1 + s2 = totalSum
+     * and s1 = s2
+     */
     public static boolean canPartitionEqualSubset(int[] nums, int target) {
         if (target == 0) return true;
         if (nums == null || nums.length == 0) return false;
-        int n = nums.length;
-        int[][] dp = new int[n][target + 1];
-        for (int[] row : dp) Arrays.fill(row, -1);
         int totalSum = 0;
         for(int n: nums) {
             totalSum += n;
         }
         target = totalSum / 2;
-        return solve(n - 1, target, nums, dp);
+        return isSubsetSumOpt(nums, target);
     }
+
+    /**
+     * Recurrence:
+     * f(i, s1, s2) -> Min diff of sum of subsets s1 and s2 formed by using nums till index i
+     * Here there are 3 changing dimensions, so we can try to reduce chanding dimensions
+     * 
+     * We need to minimize |s1 - s2|
+     * Since s1 - s2 = +-x, s1 + s2 = totalSum, so we get x = |totalSum - 2*s1|
+     * 
+     * So now our recurrence is
+     * f(i, x) -> Can there be a partition such that the sum of subsets s1+s2 is x (target)
+     * 
+     */
+    public static int partitionIntoSubsetsWithMinSumDiff(int[] nums) {
+        if (nums == null || nums.length == 0) return false;
+        int totalSum = 0;
+        for(int n: nums) {
+            totalSum += n;
+        }
+        
+        // int target = total / 2;
+        // If we do a dry run we can see that dp[n-1][*] row will be a palindrome
+        int minSumDiff = Integer.MAX_VALUE;
+        for(int s1=0; s1<=totalSum; s1++) {
+            if(isSubsetSumOpt(nums, s1)) {
+                minSumDiff = Math.min(minSumDiff, Math.abs((totalSum - 2*s1)));
+            }
+        }
+        return minSumDiff;
+    }  
 
     // explaining purpose: f(i, t) — can we form sum t using elements in [0..i]?
     private static boolean solve(int i, int t, int[] nums, int[][] dp) {
@@ -106,7 +138,7 @@ public class SubSetSum {
         return dp[n - 1][target];
     }
 
-    public static boolean isSubsetSumSpace(int[] nums, int target) {
+    public static boolean isSubsetSumOpt(int[] nums, int target) {
         // explaining purpose: target 0 is always achievable with the empty subset
         if (target == 0) return true;
         // explaining purpose: empty array can’t make a positive target
