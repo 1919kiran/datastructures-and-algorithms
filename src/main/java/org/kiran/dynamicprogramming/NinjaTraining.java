@@ -7,132 +7,132 @@ public class NinjasTrainingMemo {
      * best(day, j) = points[day][j] + max(best(day-1, other1), best(day-1, other2))
      */
     public static int maxPointsMemo(int[][] points) {
-        // explaining purpose: guard against no days so we cleanly return 0
+        // guard against no days so we cleanly return 0
         if (points == null || points.length == 0) return 0;
-        // explaining purpose: capture number of days
+        // capture number of days
         int n = points.length;
-        // explaining purpose: allocate dp with n rows and 3 cols where dp[d][j] = best total if we pick j on day d
+        // allocate dp with n rows and 3 cols where dp[d][j] = best total if we pick j on day d
         int[][] dp = new int[n][3];
-        // explaining purpose: initialize dp with a sentinel to indicate "not computed"
+        // initialize dp with a sentinel to indicate "not computed"
         for (int[] row : dp) Arrays.fill(row, Integer.MIN_VALUE);
-        // explaining purpose: compute the best ending with activity 0 on the last day
+        // compute the best ending with activity 0 on the last day
         int end0 = solve(n - 1, 0, points, dp);
-        // explaining purpose: compute the best ending with activity 1 on the last day
+        // compute the best ending with activity 1 on the last day
         int end1 = solve(n - 1, 1, points, dp);
-        // explaining purpose: compute the best ending with activity 2 on the last day
+        // compute the best ending with activity 2 on the last day
         int end2 = solve(n - 1, 2, points, dp);
-        // explaining purpose: return the maximum among the three possible last-day activities
+        // return the maximum among the three possible last-day activities
         return Math.max(end0, Math.max(end1, end2));
     }
 
-    // explaining purpose: top-down recurrence where we force day d to use activity j
+    // top-down recurrence where we force day d to use activity j
     private static int solve(int day, int j, int[][] points, int[][] dp) {
-        // explaining purpose: base case for the first day, just take that day's points for activity j
+        // base case for the first day, just take that day's points for activity j
         if (day == 0) return points[0][j];
-        // explaining purpose: reuse cached value if already computed
+        // reuse cached value if already computed
         if (dp[day][j] != Integer.MIN_VALUE) return dp[day][j];
-        // explaining purpose: compute the best among the two allowed previous-day activities (not equal to j)
+        // compute the best among the two allowed previous-day activities (not equal to j)
         int bestPrev = Integer.MIN_VALUE;
-        // explaining purpose: iterate over the three activities to choose a previous different from j
+        // iterate over the three activities to choose a previous different from j
         for (int prev = 0; prev < 3; prev++) {
-            // explaining purpose: skip the same activity to obey the constraint
+            // skip the same activity to obey the constraint
             if (prev == j) continue;
-            // explaining purpose: candidate total if yesterday was 'prev' and today is 'j'
+            // candidate total if yesterday was 'prev' and today is 'j'
             int candidate = solve(day - 1, prev, points, dp);
-            // explaining purpose: keep the best achievable yesterday
+            // keep the best achievable yesterday
             bestPrev = Math.max(bestPrev, candidate);
         }
-        // explaining purpose: today we add points[day][j] on top of bestPrev
+        // today we add points[day][j] on top of bestPrev
         dp[day][j] = points[day][j] + bestPrev;
-        // explaining purpose: return and allow reuse
+        // return and allow reuse
         return dp[day][j];
     }
 
     public static int maxPointsTab(int[][] points) {
-        // explaining purpose: handle empty schedule safely
+        // handle empty schedule safely
         if (points == null || points.length == 0) return 0;
-        // explaining purpose: number of days
+        // number of days
         int n = points.length;
-        // explaining purpose: dp table where dp[d][last] is best score up to day d if previous activity is 'last'
+        // dp table where dp[d][last] is best score up to day d if previous activity is 'last'
         int[][] dp = new int[n][4];
 
-        // explaining purpose: initialize the base for day 0 according to allowed tasks
-        // explaining purpose: when last == 0, we can do tasks 1 or 2 on day 0
+        // initialize the base for day 0 according to allowed tasks
+        // when last == 0, we can do tasks 1 or 2 on day 0
         dp[0][0] = Math.max(points[0][1], points[0][2]);
-        // explaining purpose: when last == 1, we can do tasks 0 or 2 on day 0
+        // when last == 1, we can do tasks 0 or 2 on day 0
         dp[0][1] = Math.max(points[0][0], points[0][2]);
-        // explaining purpose: when last == 2, we can do tasks 0 or 1 on day 0
+        // when last == 2, we can do tasks 0 or 1 on day 0
         dp[0][2] = Math.max(points[0][0], points[0][1]);
-        // explaining purpose: when last == 3 (no restriction), we can pick the best among all three
+        // when last == 3 (no restriction), we can pick the best among all three
         dp[0][3] = Math.max(points[0][0], Math.max(points[0][1], points[0][2]));
 
-        // explaining purpose: fill the table day by day from 1 to n-1
+        // fill the table day by day from 1 to n-1
         for (int day = 1; day < n; day++) {
-            // explaining purpose: compute dp[day][last] for all four values of 'last'
+            // compute dp[day][last] for all four values of 'last'
             for (int last = 0; last < 4; last++) {
-                // explaining purpose: start with zero because scores are non-negative; we’ll maximize over choices
+                // start with zero because scores are non-negative; we’ll maximize over choices
                 int best = 0;
-                // explaining purpose: try each task as today's pick
+                // try each task as today's pick
                 for (int task = 0; task < 3; task++) {
-                    // explaining purpose: skip if this task violates the 'no same as last' rule
+                    // skip if this task violates the 'no same as last' rule
                     if (task == last) continue;
-                    // explaining purpose: today’s points plus best up to previous day if we end yesterday with 'task'
+                    // today’s points plus best up to previous day if we end yesterday with 'task'
                     int candidate = points[day][task] + dp[day - 1][task];
-                    // explaining purpose: keep the max across allowed tasks
+                    // keep the max across allowed tasks
                     best = Math.max(best, candidate);
                 }
-                // explaining purpose: store the best value for state (day, last)
+                // store the best value for state (day, last)
                 dp[day][last] = best;
             }
         }
 
-        // explaining purpose: final answer is with 'no restriction' at the last day
+        // final answer is with 'no restriction' at the last day
         return dp[n - 1][3];
     }
 
     public static int maxPointsOpt(int[][] points) {
-        // explaining purpose: handle no days
+        // handle no days
         if (points == null || points.length == 0) return 0;
-        // explaining purpose: number of days
+        // number of days
         int n = points.length;
-        // explaining purpose: prev[last] corresponds to dp[day-1][last]
+        // prev[last] corresponds to dp[day-1][last]
         int[] prev = new int[4];
 
-        // explaining purpose: initialize prev as the base for day 0
-        // explaining purpose: last==0 forbids task 0, so take max of tasks 1 and 2
+        // initialize prev as the base for day 0
+        // last==0 forbids task 0, so take max of tasks 1 and 2
         prev[0] = Math.max(points[0][1], points[0][2]);
-        // explaining purpose: last==1 forbids task 1, so take max of tasks 0 and 2
+        // last==1 forbids task 1, so take max of tasks 0 and 2
         prev[1] = Math.max(points[0][0], points[0][2]);
-        // explaining purpose: last==2 forbids task 2, so take max of tasks 0 and 1
+        // last==2 forbids task 2, so take max of tasks 0 and 1
         prev[2] = Math.max(points[0][0], points[0][1]);
-        // explaining purpose: last==3 allows any; take max among all three tasks
+        // last==3 allows any; take max among all three tasks
         prev[3] = Math.max(points[0][0], Math.max(points[0][1], points[0][2]));
 
-        // explaining purpose: iterate over days building current from previous
+        // iterate over days building current from previous
         for (int day = 1; day < n; day++) {
-            // explaining purpose: curr[last] will store dp[day][last]
+            // curr[last] will store dp[day][last]
             int[] curr = new int[4];
-            // explaining purpose: compute for each possible 'last'
+            // compute for each possible 'last'
             for (int last = 0; last < 4; last++) {
-                // explaining purpose: start best at 0 and maximize across allowed tasks
+                // start best at 0 and maximize across allowed tasks
                 int best = 0;
-                // explaining purpose: try each task as today’s choice
+                // try each task as today’s choice
                 for (int task = 0; task < 3; task++) {
-                    // explaining purpose: enforce the constraint by skipping equal task
+                    // enforce the constraint by skipping equal task
                     if (task == last) continue;
-                    // explaining purpose: combine today’s points with the best for previous day ending at 'task'
+                    // combine today’s points with the best for previous day ending at 'task'
                     int candidate = points[day][task] + prev[task];
-                    // explaining purpose: track the maximum candidate
+                    // track the maximum candidate
                     best = Math.max(best, candidate);
                 }
-                // explaining purpose: write the result for state (day, last)
+                // write the result for state (day, last)
                 curr[last] = best;
             }
-            // explaining purpose: roll the window; current becomes previous for the next iteration
+            // roll the window; current becomes previous for the next iteration
             prev = curr;
         }
 
-        // explaining purpose: answer is with no restriction after the final day
+        // answer is with no restriction after the final day
         return prev[n == 0 ? 3 : 3];
     }
 
