@@ -39,4 +39,70 @@ public class MinimumCoins {
         // caching the better of the two choices for state (i, t)
         return dp[i][t] = Math.min(notTake, take);
     }
+
+    // bottom-up build using the same recurrence but iteratively
+    public static int coinChangeTab(int[] coins, int amount) {
+        // early out for zero target
+        if (amount == 0) return 0;
+        // capturing number of coins
+        int n = coins.length;
+        // allocating a table of size n x (amount+1)
+        int[][] dp = new int[n][amount + 1];
+        // initializing the base row for coin index 0
+        for (int t = 0; t <= amount; t++) {
+            // when t is a multiple of coins[0], we can pay exactly using t/coins[0] copies
+            if (t % coins[0] == 0) dp[0][t] = t / coins[0];
+            // otherwise we mark it impossible for this row
+            else dp[0][t] = INF;
+        }
+        // filling the table from coin index 1 up to n-1
+        for (int i = 1; i < n; i++) {
+            // iterating all targets from 0..amount
+            for (int t = 0; t <= amount; t++) {
+                // not taking coin i means inheriting the answer from the previous row
+                int notTake = dp[i - 1][t];
+                // taking coin i uses the current row because it's unbounded
+                int take = coins[i] <= t ? 1 + dp[i][t - coins[i]] : INF;
+                // storing the better option for (i, t)
+                dp[i][t] = Math.min(notTake, take);
+            }
+        }
+        // converting INF back to -1 for the final answer
+        int ans = dp[n - 1][amount];
+        return ans >= INF ? -1 : ans;
+    }
+
+    public static int coinChangeTab(int[] coins, int amount) {
+        // early out for zero target
+        if (amount == 0) return 0;
+        // capturing number of coins
+        int n = coins.length;
+        // allocating a table of size n x (amount+1)
+        int[] prev = new int[amount + 1];
+        // initializing the base row for coin index 0
+        for (int t = 0; t <= amount; t++) {
+            // when t is a multiple of coins[0], we can pay exactly using t/coins[0] copies
+            if (t % coins[0] == 0) prev[t] = t / coins[0];
+            // otherwise we mark it impossible for this row
+            else prev[t] = INF;
+        }
+        // filling the table from coin index 1 up to n-1
+        for (int i = 1; i < n; i++) {
+            int[] curr = new int[amount + 1];
+            // iterating all targets from 0..amount
+            for (int t = 0; t <= amount; t++) {
+                // not taking coin i means inheriting the answer from the previous row
+                int notTake = prev[t];
+                // taking coin i uses the current row because it's unbounded
+                int take = coins[i] <= t ? 1 + curr[t - coins[i]] : INF;
+                // storing the better option for (i, t)
+                curr[t] = Math.min(notTake, take);
+            }
+            prev = curr;
+        }
+        // converting INF back to -1 for the final answer
+        int ans = prev[amount];
+        return ans >= INF ? -1 : ans;
+    }
+
 }

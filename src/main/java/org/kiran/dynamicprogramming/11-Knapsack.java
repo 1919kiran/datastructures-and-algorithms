@@ -49,6 +49,32 @@ public class Knapsack {
         return dp[i][cap];
     }
 
+    /**
+     * f(i, cap) = max( f(i-1, cap), value[i] + f(i, cap − weight[i]) )
+     */
+    private static int solveUnboundedKnapsack(int i, int cap, int[] wt, int[] val, int[][] dp) {
+        // base case—only item 0 is available, take it if it fits
+        if (i == 0) {
+            // if weight of first item is within capacity, value is val[0], else 0
+            return wt[0] <= cap ? val[0] : 0;
+        }
+        // memoization—if we’ve computed (i, cap) before, reuse it
+        if (dp[i][cap] != -1) return dp[i][cap];
+        // option 1—skip the current item and keep capacity unchanged
+        int notTake = solve(i - 1, cap, wt, val, dp);
+        // initialize take branch as impossible by default
+        int take = Integer.MIN_VALUE;
+        // only try taking when the item fits within remaining capacity
+        if (wt[i] <= cap) {
+            // value is current item's value plus best with reduced capacity
+            take = val[i] + solve(, cap - wt[i], wt, val, dp);
+        }
+        // choose the better of taking or skipping and cache the result
+        dp[i][cap] = Math.max(notTake, take);
+        // return the cached optimal value for (i, cap)
+        return dp[i][cap];
+    }
+
     public static int knapSackTab(int[] wt, int[] val, int W) {
         if (W <= 0 || wt == null || val == null || wt.length == 0) return 0;
         // (index,cap)
