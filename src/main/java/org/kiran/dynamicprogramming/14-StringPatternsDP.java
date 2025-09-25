@@ -147,4 +147,107 @@ public class StringPatternsDP {
 
     }
 
+    public static int longestPalindromicSubstring(String s) {
+        // I handle empty input quickly
+        if (s == null || s.isEmpty()) return 0;
+
+        // I store the best length found so far
+        int bestLen = 1;
+
+        // I scan every index as a potential center
+        for (int i = 0; i < s.length(); i++) {
+            // I expand for odd-length palindromes centered at i
+            int lenOdd = expand(s, i, i);
+            // I update best when odd gives a longer palindrome
+            if (lenOdd > bestLen) bestLen = lenOdd;
+
+            // I expand for even-length palindromes centered between i and i+1
+            int lenEven = expand(s, i, i + 1);
+            // I update best when even gives a longer palindrome
+            if (lenEven > bestLen) bestLen = lenEven;
+        }
+
+        // I return only the length as your signature indicates
+        return bestLen;
+    }
+
+    private static int expand(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return right - left - 1;
+    }
+
+    /**
+     * Intuition: DP: pal[i][j] is true if s[i] == s[j] and either j−i < 2 or pal[i+1][j−1] is true. 
+     * We can fill this for all i, j in O(n^2)
+     * suppose we want to pick a palindrome starting at some index i. If there exists any palindrome starting at i with 
+     * length ≥ k, then there also exists one with length exactly k or k+1. That greedy choice is safe exactly because 
+     * any longer pick can be shrunk to k or k+1 at the same start, and picking shorter never blocks a 
+     * better future since we only care about count, not total covered length.
+     */
+    public int maxPalindromes(String s, int k) {
+        // Handle trivial case where each char can be taken
+        if (k <= 1) return s.length();
+
+        int n = s.length();
+
+        // Precompute palindrome table pal[i][j]: true if s[i..j] is palindrome
+        boolean[][] pal = new boolean[n][n];
+
+        // Every single character is a palindrome
+        for (int i = 0; i < n; i++) {
+            pal[i][i] = true;
+        }
+
+        // Fill table by increasing length to satisfy dependency on pal[i+1][j-1]
+        for (int len = 2; len <= n; len++) {
+            // Iterate all start indices for this length
+            for (int i = 0; i + len - 1 < n; i++) {
+                // Compute end index for current substring
+                int j = i + len - 1;
+
+                // Check matching ends first
+                if (s.charAt(i) == s.charAt(j)) {
+                    // For length 2, matching ends suffice; otherwise rely on inner substring
+                    if (len == 2) {
+                        pal[i][j] = true;
+                    } else {
+                        // Use DP relation pal[i][j] = pal[i+1][j-1] when ends match
+                        pal[i][j] = pal[i + 1][j - 1];
+                    }
+                } else {
+                    // Ends mismatch means not a palindrome
+                    pal[i][j] = false;
+                }
+            }
+        }
+
+        // Greedy scan to pick shortest valid palindrome at each step
+        int i = 0;
+        int count = 0;
+
+        while (i < n) {
+            // Check length k first to prefer shorter split
+            if (i + k - 1 < n && pal[i][i + k - 1]) {
+                // Take the length-k palindrome starting at i
+                count++;
+                // Jump past this chosen substring to keep non-overlap
+                i += k;
+            } else if (i + k < n && pal[i][i + k]) {
+                // Take the length-(k+1) palindrome if length-k is not available
+                count++;
+                // Jump past this chosen substring
+                i += k + 1;
+            } else {
+                // No valid palindrome starting at i, move forward by one
+                i++;
+            }
+        }
+
+        return count;
+    }
+
+
 }
