@@ -142,4 +142,36 @@ class Solution {
             }
         }
     }
+
+    public int maxSquareAreaInIsland(char[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int maxArea = Integer.MIN_VALUE;
+        int[][] dp = new int[][];
+        for(int[] row : dp) Arrays.fill(row, -1);
+
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<m; j++) {
+                if(grid[i][j] == '1') {
+                    int side = solve(n,m,i,j,grid);
+                    maxArea = Math.max(maxArea, side*side);
+                }
+            }
+        }
+    }
+    private int solve(int n, int m, int r, int c, char[][] grid) {
+        if(i >= n || j >= m) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        if(a[i][j] == '0') {
+            dp[i][j] = 0;
+            return 0;
+        }
+        int right = solve(i, j+1, a);
+        int left = solve(i+1, j, a);
+        int diag = solve(i+1, j+1, a);
+        dp[i][j] = Math.min(right, Math.min(left, diag));
+
+        return dp[i][j];
+    }
+
 }
