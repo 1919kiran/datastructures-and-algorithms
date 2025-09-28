@@ -63,6 +63,3 @@ class RandomizedCollection {
         return arr.get(i);
     }
 }
- {
-    
-}

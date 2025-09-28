@@ -7,14 +7,14 @@ import java.util.*;
 
 
 public class CountSubArraysWithXorK {
-    /*
-    *  Maintain XOR for a prefix
-    *
-    * XOR property: XOR(L..R) = prefixXor(R) ^ prefixXor(L-1)
-    * Is there a subarray ending at i and having xor k means
-    * for subarray ending at i to have xor K, we need previous prefix value = prefixXor(i) ^ K
-    *
-    * */
+    /**
+     * Intuiton: Think in terms of count of sub arrays with sum equals K
+     * For that problem what we do is we maintain a running prefixSum from left to right
+     * And we will check if there were any previously encountered prefix sum that had the sum prefixSum-K
+     * Why: Because in order to include those subarrays in the current subarray, the sum of previously encounterd
+     * subarray and the subarray with sum K (we don't know if exists at this point). But if a sub array with sum  K
+     * exists then there must be a subarray with sum prefixSum-K to make prefixSum = (prefixSum-K)+K
+     */
     public long countSubarraysWithXorK(int[] nums, int k) {
         // if array is null or empty, there are no subarrays to count
         if (nums == null || nums.length == 0) return 0L; // quick exit

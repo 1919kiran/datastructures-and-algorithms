@@ -3,8 +3,8 @@ import java.util.List;      // import list interface for clarity
 
 class Solution {
     /**
-     * Intuition: There will be (n-1)! permutations with first char is common and there will be n such permutations resulting in n*(n-1)! = n! permutations
-     * and there will be (n-2)! permutations where first 2 chars are fixed and so on
+     * Intuition: There will be (n-1)! permutations with first char is common and there will be n such permutations 
+     * resulting in n*(n-1)! = n! permutations and there will be (n-2)! permutations where first 2 chars are fixed and so on
      * So the first char of kth permutation is determined by out of which n blocks each of size (n-1)! k falls into = k / blocksize
      * Within the block, the position of k can be determined by k % blocksize
      * 

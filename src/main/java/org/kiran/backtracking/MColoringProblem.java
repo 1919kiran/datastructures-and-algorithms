@@ -4,7 +4,8 @@ import java.util.*; // importing utilities
 class MCOLOR_Backtracking {
 
     /**
-     * Intuition: Start from the first node. Check all possible colors that can be assigned to it.. the check is that it's adjacent nodes must not have the same color.
+     * Intuition: Start from the first node. Check all possible colors that can be assigned to it.. 
+     * the check is that it's adjacent nodes must not have the same color.
      * If the color is possible, color the node and proceed to next node and backtrack.
      * The key here is that whenever a node color is not possible we terminate the branch.
      */
