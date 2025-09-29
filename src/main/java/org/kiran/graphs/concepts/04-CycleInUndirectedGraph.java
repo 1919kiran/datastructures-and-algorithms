@@ -53,7 +53,8 @@ class Solution {
     }
 
     /**
-     * Intuition: if during recursion we reach a neighbor that is already visited and that neighbor is not the parent of the current node, then we found a cycle
+     * Intuition: if during recursion we reach a neighbor that is already visited and that neighbor is not the parent 
+     * of the current node, then we found a cycle
      * 
      */
     private boolean dfsCheck(int node, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] visited) {

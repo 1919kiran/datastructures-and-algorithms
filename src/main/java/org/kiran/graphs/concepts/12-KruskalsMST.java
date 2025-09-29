@@ -1,4 +1,8 @@
 /**
+ * 
+ * MST: For a graph with N nodes, there can be multiple tree configurations such that there are N-1 edges where every node 
+ * is reachble from any node. MST is one such tree where sum of edges is minimal.
+ * 
  * Algorithm:
  * 1. Sort all edges by (wt, u, v)
  * 2. Find the parent of u,v

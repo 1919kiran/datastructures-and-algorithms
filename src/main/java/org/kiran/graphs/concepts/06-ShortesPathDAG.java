@@ -6,8 +6,10 @@
  *      - 
  * 
  * Intuition: 
- * In the topo sort order, the order deretmines a sequence of reachability.. i.e, d[2] can be reached by d[0] -> d[1] so as we move forward we will have more ways to reach the node and we can pick the shortest path at each step greedily.
- * if you process nodes in a topological order, by the time you reach a node, all edges that point into it come from nodes earlier in the order
+ * In the topo sort order, the order deretmines a sequence of reachability.. i.e, d[2] can be reached by d[0] -> d[1] 
+ * so as we move forward we will have more ways to reach the node and we can pick the shortest path at each step greedily.
+ * if you process nodes in a topological order, by the time you reach a node, all edges that point into it come from 
+ * nodes earlier in the order
  */
 
 // define the class that contains our methods

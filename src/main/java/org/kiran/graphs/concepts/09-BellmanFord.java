@@ -15,6 +15,8 @@
  * unreachable, so in this case each iteration 1 distance is computed using the parent distance which has been computed in previous step.
  * so if we do it n-1 times, it is guaranteed that all connected nodes will be relaxed.
  * 
+ * In any graph of N nodes the max number of hops we take to reach fro. u->v will not exceed N-1
+ * 
  * TC: O(n*m)
  * 
  */

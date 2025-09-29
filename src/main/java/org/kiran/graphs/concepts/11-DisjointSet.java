@@ -21,10 +21,11 @@
  *  - if rank(u)!=rank(v), attach the root of smaller rank node to root of larger rank node
  *  - if rank(u)==rank(v) then make u parent of v and increase rank of u
  *  note: rank is not increased when a smaller rank node is attached to larger rank node becase rank != height, it indicates 
- *  which to pick at each step why not connect larger to smaller? because that will increase the path to be travlled to find a parent
+ *  which to pick at each step.
+ *  Why not connect larger to smaller? because that will increase the path to be travlled to find a parent
  * 4. When doing find:
- *  - Recursively find the ultimate parent, and update the parent as this ultimate root for every node along the recursive path (backtracking). 
- *  This is called as path compression.
+ *  - Recursively find the ultimate parent, and update the parent as this ultimate root for every node along the 
+ * recursive path (backtracking). This is called as path compression.
  * 
  */
 class DisjointSetUnion {

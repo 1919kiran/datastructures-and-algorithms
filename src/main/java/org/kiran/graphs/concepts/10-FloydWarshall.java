@@ -1,7 +1,11 @@
 // import utilities for Arrays if needed
 import java.util.*; // not strictly necessary but handy to have
 
-// define the class that holds our in-place Floyd–Warshall
+/**
+ * Intuition:
+ * For an path i->j there can be an intermediate node k such that the path goes from i->k and k->j
+ * So try all possible nodes as k for all node pairs (i,j)
+ */
 class Solution {
 
     // public method: run Floyd–Warshall in-place on the given adjacency matrix

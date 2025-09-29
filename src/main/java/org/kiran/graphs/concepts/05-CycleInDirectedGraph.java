@@ -18,7 +18,7 @@ class Solution {
      * that means we found a cycle. We can do that by maintain visited that is local to the call stack... 
      * similar to backtracking we takeout from pathvisited once we go back
      */
-    private boolean dfsCheck(int node, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] visited, , boolean[] pathVisited) {
+    private boolean dfsCheck(int node, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] visited, boolean[] pathVisited) {
         vistited[node] = true;
         pathVisited[node] = true;
         // go through neighbors

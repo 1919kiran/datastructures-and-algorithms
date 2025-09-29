@@ -5,6 +5,7 @@ class Solution{
      * Intuition: We just store the ordering in the same way it was travelled
      * The topological ordering is preserved by the DFS path so if we have the DFS path we have the topo ordering.
      * Since DFS is recursive/LIFO in nature we use a stack
+     * Note that if we use DFS, we push the elements to stack when we finish exploring all it's children
      */
     public List<Integer> topoSortDfs(int V, List<List<Integer>> graph) {
         boolean[] visited = new boolean[V];        // track visited nodes
@@ -42,6 +43,9 @@ class Solution{
      * and reduce the indegree of it's children (hypothetically remove the edge) - so that when indegree of any of the neighbor becomes 0, 
      * we can fix it's ordering too by queing them.. 
      * 4. Repeat until queue is empty
+     * 
+     * Why? Unlike DFS, we can't simply use queue to retain the order because all it's children are not explored yet
+     * Since for topo sort the ivariant is that parent should appear before all it's children, we use indegree concept
      */
     public List<Integer> topoSortBfs(int V, List<List<Integer>> graph) {
         int[] indegree = new int[V];                 // indegree of each node

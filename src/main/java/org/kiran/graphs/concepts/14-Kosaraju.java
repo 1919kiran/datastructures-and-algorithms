@@ -1,4 +1,7 @@
 /**
+ * 
+ * SCC: A subgraph where there is a directed path for every pair combination within the subgraph
+ * 
  * Algorithm:
  * 1. Sort the nodes in the order of finishing time from a starting node (similar to topo sort but here there can be cycles) and keep it in a stack.
  * 2. Reverse/transpose the graph by flipping all the edges on the graph
